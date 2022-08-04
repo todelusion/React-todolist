@@ -5,21 +5,21 @@
 @tailwind utilities;
 
 @layer base {
-    body {
-        @apply bg-white
-    }
+  body {
+    @apply bg-white;
+  }
 }
 @layer components {
-    .OvalContainer {
-        @apply relative flex items-center w-full h-14 z-0 
-    }
-    .OvalSelf {
-        @apply before:absolute before:top-3 before:-bottom-0 before:-left-3 before:-right-3 before:content-[''] before:border-[3px] before:border-primary before:rounded-[100%]
-    }
-    .m-OvalContainer{
-        @apply relative flex items-center z-0
-    }
-    .m-OvalSelf{
-        @apply before:absolute before:-top-10 before:-bottom-10 before:left-3 before:right-3 before:content-[''] before:border-[3px] before:border-primary before:rounded-[100%]
-    }
+  .OvalContainer {
+    @apply relative z-0 flex h-14 w-full items-center;
+  }
+  .OvalSelf {
+    @apply before:absolute before:top-3 before:-bottom-0 before:-left-3 before:-right-3 before:rounded-[100%] before:border-[3px] before:border-primary before:content-[''];
+  }
+  .m-OvalContainer {
+    @apply relative z-0 flex items-center;
+  }
+  .m-OvalSelf {
+    @apply before:absolute before:-top-10 before:-bottom-10 before:left-3 before:right-3 before:rounded-[100%] before:border-[3px] before:border-primary before:content-[''];
+  }
 }
