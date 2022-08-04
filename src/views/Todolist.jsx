@@ -18,7 +18,9 @@ function Todolist() {
           To Do
         </h1>
       </nav>
-      <div className="relative mx-auto h-[800px] w-full max-w-3xl border-2 border-black"></div>
+      <div className="flex w-full justify-center">
+        <div className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf"></div>
+      </div>
     </div>
   );
 }
