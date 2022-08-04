@@ -12,7 +12,7 @@ function Todolist() {
           <span className="OvalContainer OvalSelf"></span>
           Do
         </h1>
-        <h1 className="-z-10 w-max justify-between font-dela text-5xl md:hidden">
+        <h1 className="-z-10 mb-10 w-max justify-between font-dela text-5xl md:hidden">
           A React
           <span className="m-OvalContainer m-OvalSelf">Based</span>
           To Do

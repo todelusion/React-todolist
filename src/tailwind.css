@@ -23,7 +23,7 @@
     @apply before:absolute before:-top-10 before:-bottom-10 before:left-3 before:right-3 before:rounded-[100%] before:border-[3px] before:border-primary before:content-[''];
   }
   .RectangleContainer {
-    @apply relative h-[800px] w-full max-w-3xl border-2 border-black bg-white;
+    @apply relative h-[800px] w-full max-w-sm md:max-w-2xl lg:max-w-3xl border-2 border-black bg-white;
   }
   .hover-RectangleContainer {
     @apply duration-150 hover:-mt-5 hover:-ml-5 hover:border-2;
