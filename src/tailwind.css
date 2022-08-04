@@ -6,6 +6,20 @@
 
 @layer base {
     body {
-        @apply bg-second
+        @apply bg-white
+    }
+}
+@layer components {
+    .OvalContainer {
+        @apply relative flex items-center w-full h-14 z-0 
+    }
+    .OvalSelf {
+        @apply before:absolute before:top-3 before:-bottom-0 before:-left-3 before:-right-3 before:content-[''] before:border-[3px] before:border-primary before:rounded-[100%]
+    }
+    .m-OvalContainer{
+        @apply relative flex items-center z-0
+    }
+    .m-OvalSelf{
+        @apply before:absolute before:-top-10 before:-bottom-10 before:left-3 before:right-3 before:content-[''] before:border-[3px] before:border-primary before:rounded-[100%]
     }
 }
