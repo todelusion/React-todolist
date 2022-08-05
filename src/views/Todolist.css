@@ -1,0 +1,6 @@
+.i-faX {
+    display: none;
+}
+li:hover> .i-faX {
+    display: block;
+}

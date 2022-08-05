@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-white;
+    @apply bg-white box-border;
   }
 }
 @layer components {
@@ -23,10 +23,10 @@
     @apply before:absolute before:-top-10 before:-bottom-10 before:left-3 before:right-3 before:rounded-[100%] before:border-[3px] before:border-primary before:content-[''];
   }
   .RectangleContainer {
-    @apply relative h-[800px] w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl border-2 border-black bg-white;
+    @apply relative w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl border-2 border-black bg-white;
   }
   .hover-RectangleContainer {
-    @apply duration-150 hover:-mt-5 hover:-ml-5 hover:border-2;
+    @apply hover:border-primary duration-150 hover:-mt-5 hover:-ml-5 hover:border-2;
   }
   .RectangleSelf {
     @apply before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:-z-10 before:border-2 before:border-black before:bg-white before:content-[''];
