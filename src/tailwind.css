@@ -26,13 +26,13 @@
     @apply relative w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl border-2 border-black bg-white;
   }
   .hover-RectangleContainer {
-    @apply hover:border-primary duration-150 hover:-mt-5 hover:-ml-5 hover:border-2;
+    @apply hover:border-primary duration-150 hover:-ml-5 hover:border-2;
   }
   .RectangleSelf {
     @apply before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:-z-10 before:border-2 before:border-black before:bg-white before:content-[''];
   }
   .hover-RectangleSelf {
-    @apply before:duration-150 hover:before:left-7 hover:before:-right-7 hover:before:top-7 hover:before:-bottom-7;
+    @apply before:duration-150 hover:before:left-4 hover:before:-right-4 hover:before:top-4 hover:before:-bottom-4;
   }
   .hover-faX {
     @apply 

@@ -22,9 +22,9 @@ function Todolist() {
           To Do
         </h1>
       </nav>
-      <div className="flex flex-col items-center w-full">
-        <div className="mb-16 px-16 py-10  RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
-          <input type="text"  className="py-1 px-1 border-2 border-black rounded-md w-full outline-none"/>
+      {-1<1 && <div className="flex flex-col items-center w-full">
+        <div className="mb-16 px-16 py-5  RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
+          <input type="text"  className="py-1 px-1  border-b-2 border-b-black w-full outline-none"/>
         </div>
         <div className="px-16 py-7 RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
           <ul>
@@ -37,7 +37,7 @@ function Todolist() {
             </li>
           </ul>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
