@@ -10,19 +10,19 @@ const baseURL = "https://jsonplaceholder.typicode.com/posts/1";
 function Todolist() {
   return (
     <div>
-      <nav>
-        <h1 className="-z-10 mb-14 hidden whitespace-nowrap font-dela text-6xl md:flex">
+      <nav className='absolute top-0 left-0 right-0'>
+        <h1 className="-z-10 mb-28 hidden whitespace-nowrap font-dela text-5xl md:flex">
           A React Based To
           <span className="OvalContainer OvalSelf"></span>
           Do
         </h1>
-        <h1 className="-z-10 mb-10 w-max justify-between font-dela text-5xl md:hidden">
+        <h1 className="-z-10 mb-10 w-max justify-between font-dela text-5xl md:text-8xl md:hidden">
           A React
           <span className="m-OvalContainer m-OvalSelf">Based</span>
           To Do
         </h1>
       </nav>
-      {-1<1 && <div className="flex flex-col items-center w-full">
+      {-1<1 && <div className="flex flex-col items-center w-full mt-32">
         <div className="mb-16 px-16 py-5  RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
           <input type="text"  className="py-1 px-1  border-b-2 border-b-black w-full outline-none"/>
         </div>
