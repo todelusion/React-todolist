@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import './Todolist.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
@@ -31,8 +30,8 @@ function Todolist() {
           <ul>
             <li className="flex items-center justify-between">
               <div className="flex items-center">
-                <FontAwesomeIcon icon={faCheck} />
-                <p className="ml-7">提醒我買USB線</p>
+                <div className='border-2 border-black w-6 h-6'></div>
+                <p className="ml-7 cursor-pointer hover:line-through">提醒我買USB線</p>
               </div>
               <FontAwesomeIcon icon={faX} className="i-faX" />
             </li>
