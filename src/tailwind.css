@@ -32,7 +32,7 @@
     @apply before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:-z-10 before:border-2 before:border-black before:bg-white before:content-[''];
   }
   .hover-RectangleSelf {
-    @apply before:duration-150 hover:before:left-4 hover:before:-right-4 hover:before:top-4 hover:before:-bottom-4;
+    @apply before:duration-150 hover:before:border-primary hover:before:left-4 hover:before:-right-4 hover:before:top-4 hover:before:-bottom-4;
   }
   .hover-faX {
     @apply 
