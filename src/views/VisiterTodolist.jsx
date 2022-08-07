@@ -1,43 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
-function Todolist() {
-  const [events, setEvents] = useState([
-    {id: 1, content: '烘衣服', completed_at: null},
-    {id: 2, content: '洗衣服', completed_at: null},
-    {id: 3, content: '洗碗', completed_at: null},
-  ])
-  
+import LoadingModal from '../components/LoadingModal'
+
+const baseUrl = 'https://fathomless-brushlands-42339.herokuapp.com/todo8'
+
+function VisiterTodolist() {
+  const [events, setEvents] = useState([])
+  const [key, setKey] = useState(1)
   const [input, setInput] = useState('')
+  const [isPending, setIsPending] = useState(false)
+  
+
+  useEffect(() => {
+    const fetchData = async() => {
+      const res = await axios.get(baseUrl)
+      console.log(res)
+      setEvents(res.data)
+      setIsPending(false)
+    }
+    fetchData()
+    
+  }, [key])
+  
 
   const handleInput = (e) => {
     setInput(e.target.value)
   }
 
   const setTempEvent = () => {
-    // events[events.length].id
     if(input == ''){
       return
     }else{
-      const newEvents = [...events, {
-        id: events[events.length-1].id+1,
+      const obj = {
         content: input,
         completed_at: null
-      }]
-      return newEvents
+      }
+      return obj
     }
   }
 
-  const handleEvent = (e) => {
+  const handleEvent = async(e) => {
     if(e.code == 'Enter' || e.type == 'click'){
       if(setTempEvent()){
-        setEvents(setTempEvent())
+        setIsPending(true)
         setInput('')
-        console.log(events)
+        const res = await axios.post(`${baseUrl}`, setTempEvent())
+        setKey(key+1)
+        
       }else {
         alert('欄位不得為空')
       }
@@ -49,24 +63,42 @@ function Todolist() {
     }))
   }
 
-
+  const clearAll = () => {
+    events.forEach((event, index) => {
+      axios.delete(`${baseUrl}/${event.id}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    })
+    setEvents(events.filter(event => false))
+  }
+  
+  
   return (
     <>
       <div className='absolute top-0 left-0 right-0'>
         <h1 className="-z-10 mb-10 w-max justify-between font-dela text-5xl md:text-6xl">
           A React
-          <span className="m-OvalContainer m-OvalSelf">Based</span>
+          <div className={`${isPending === true ? 'show': 'close'}`}>
+            <span className="block"></span>
+          </div>
+          <div className={`${!isPending === true ? 'show': 'close'}`}>
+            <span className="m-OvalContainer m-OvalSelf duration-150"></span>
+          </div>
+          Based
+          <br />
           To Do
         </h1>
       </div>
-      <nav className='absolute top-1/2 left-5'>
-        <button className='border-2 border-black px-10 py-5 hover:bg-second'>Click to change</button>
-      </nav>
-      
-      <div className="flex flex-col items-center w-full mt-32">
-        <div className="flex items-center mb-16 pl-10 pr-7 py-5  RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
+     
+      <section className="mx-auto flex flex-col items-center mt-32 container">
+        <div className="flex items-center mb-10 pl-10 pr-7 py-5  RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
           <input value={input} onKeyUp={handleEvent} onChange={handleInput} placeholder='請輸入待辦' type="text" className="py-1 px-1  border-b-2 border-b-black w-full outline-none" />
           <button onClick={handleEvent} className='ml-7 border-2 border-black px-14 py-3 rounded-[100%] outline-none hover:bg-primary hover:text-white hover:scale-105 duration-100'>ADD</button>
+        </div>
+        <div className='w-full flex justify-start mb-10'>
+          <div className='w-40 h-20'>
+            <button onClick={clearAll} className='RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full'>Clear All</button>
+          </div>
         </div>
         <div className="px-16 py-10 RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf">
           <ul>
@@ -85,9 +117,12 @@ function Todolist() {
             }))}
           </ul>
         </div>
+      </section>
+      <div className={`${isPending === true ? 'show': 'close'}`}>
+        <LoadingModal />
       </div>
     </>
   );
 }
 
-export default Todolist;
+export default VisiterTodolist;

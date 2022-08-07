@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "pr": "prettier -w ./src"
+    "pr": "prettier -w ./src",
+    "json": "json-server --watch ./data/db.json"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
@@ -16,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^0.27.2",
+    "json-server": "^0.17.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
