@@ -203,15 +203,15 @@ function VisiterTodolist() {
                       {event.completed_at === "isDone" && (
                         <FontAwesomeIcon
                           icon={faCheck}
-                          className="h-6 w-6 text-primary"
+                          className="h-5 w-5 text-primary"
                         />
                       )}
                       {event.completed_at === "inProgrees" && (
-                        <div className="h-6 w-6 border-2 border-black"></div>
+                        <div className="p-2 border-2 border-black"></div>
                       )}
                       <p
                         onClick={() => handleStatus(index)}
-                        className={`ml-7 cursor-pointer hover:line-through ${
+                        className={`block ml-7 cursor-pointer break-all hover:line-through ${
                           event.completed_at === "isDone"
                             ? "completed_true"
                             : "completed_false"
