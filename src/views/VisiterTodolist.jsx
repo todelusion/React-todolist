@@ -146,40 +146,40 @@ function VisiterTodolist() {
           />
           <button
             onClick={handleEvent}
-            className="ml-7 rounded-[100%] border-2 border-black px-14 py-3 outline-none duration-100 hover:scale-105 hover:bg-primary hover:text-white"
+            className="ml-7 rounded-[100%] border-2 border-black px-3 md:px-14 py-3 outline-none duration-100 hover:scale-105 hover:bg-primary hover:text-white"
           >
             ADD
           </button>
         </div>
         <div className="mb-10 flex w-full justify-between">
-          <div className="h-20 w-40">
+          <div className="h-20 w-20 md:w-40 p-1 md:p-0">
             <button
               onClick={clearAll}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
+              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
             >
               Clear All
             </button>
           </div>
-          <div className="h-20 w-40">
+          <div className="h-20 md:w-40 p-1 md:p-0">
             <button
               onClick={switchToAll}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
+              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
             >
               ALL
             </button>
           </div>
-          <div className="h-20 w-40">
+          <div className="h-20 md:w-40 p-1 md:p-0">
             <button
               onClick={switchToInProgress}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
+              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
             >
               inProgrees
             </button>
           </div>
-          <div className="h-20 w-40">
+          <div className="h-20 md:w-40 p-1 md:p-0">
             <button
               onClick={switchToIsdone}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
+              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
             >
               isDone
             </button>
