@@ -29,6 +29,12 @@
   .hover-RectangleSelf {
     @apply before:duration-150 hover:before:left-4 hover:before:-right-4 hover:before:top-4 hover:before:-bottom-4 hover:before:border-primary;
   }
+  .freeze-RectangleContainer{
+    @apply relative w-full border-black bg-white -ml-5 border-2 ;
+  }
+  .freeze-RectangleSelf{
+    @apply before:-z-10 before:absolute before:left-4 before:-right-4 before:top-4 before:-bottom-4 before:border-black before:border-2 before:bg-white before:content-[''];
+  }
   .container {
     @apply max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl;
   }

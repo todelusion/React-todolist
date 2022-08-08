@@ -144,7 +144,7 @@ function VisiterTodolist() {
             </button>
           </div>
         </div>
-        <div className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf px-16 py-10">
+        <div className="freeze-RectangleContainer freeze-RectangleSelf px-16 py-10">
           <ul>
             {true &&
               events.map((event, index) => {
