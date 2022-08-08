@@ -9,8 +9,11 @@ import LoadingModal from '../components/LoadingModal'
 
 const baseUrl = 'https://fathomless-brushlands-42339.herokuapp.com/todo8'
 
+const eventStatusList = ['inProgrees', 'isDone']
+
 function VisiterTodolist() {
   const [events, setEvents] = useState([])
+  const [eventStatus, setEventStatus] = useState(false)
   const [key, setKey] = useState(1)
   const [input, setInput] = useState('')
   const [isPending, setIsPending] = useState(false)
@@ -38,7 +41,7 @@ function VisiterTodolist() {
     }else{
       const obj = {
         content: input,
-        completed_at: null
+        completed_at: false
       }
       return obj
     }
@@ -57,11 +60,21 @@ function VisiterTodolist() {
       }
     }
   }
-  const handleDelete = (index) => {
+  const handleDelete = async(index) => {
+    setIsPending(true)
+    await axios.delete(`${baseUrl}/${events[index].id}`)
     setEvents(events.filter((event, eventIndex) => {
       return index !== eventIndex
     }))
+    setIsPending(false)
   }
+  const handleStatus = async(index) => {
+    events[index].completed_at = !events[index].completed_at
+    // console.log(events)
+    setEventStatus(events[index].completed_at)
+    // console.log(eventStatus)
+  }
+
 
   const clearAll = () => {
     events.forEach((event, index) => {
@@ -106,8 +119,15 @@ function VisiterTodolist() {
               return(
               <li key={event.id} className="flex items-center justify-between py-5">
                 <div className="flex items-center">
-                  <div className='border-2 border-black w-6 h-6'></div>
-                  <p className="ml-7 cursor-pointer hover:line-through">
+
+                {/*
+                1. 使用events替換舊有的物件（包括狀態），產生新陣列傳到setEvents(newEvents) 
+                2. 使用splice直接替換就能產生新陣列
+                */
+                }
+                  { eventStatus && <FontAwesomeIcon icon={faCheck} />}
+                  { !eventStatus && <div className='border-2 border-black w-6 h-6'></div>}
+                  <p onClick={() => handleStatus(index)} className="ml-7 cursor-pointer hover:line-through">
                     {event.content}
                   </p>
                 </div>
