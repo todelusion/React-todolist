@@ -6,12 +6,13 @@
 
 @layer base {
   body {
-    @apply bg-white box-border;
+    @apply box-border bg-white;
   }
 }
+
 @layer components {
   .m-OvalContainer {
-    @apply relative z-0 block ;
+    @apply relative z-0 block;
   }
   .m-OvalSelf {
     @apply before:absolute before:-top-10 before:-bottom-28 before:left-3 before:right-7 before:rounded-[100%] before:border-[3px] before:border-primary before:content-[''];
@@ -20,24 +21,29 @@
     @apply relative w-full  border-2 border-black bg-white;
   }
   .hover-RectangleContainer {
-    @apply hover:border-primary duration-150 hover:-ml-5 hover:border-2;
+    @apply duration-150 hover:-ml-5 hover:border-2 hover:border-primary;
   }
   .RectangleSelf {
     @apply before:absolute before:left-0 before:right-0 before:top-0 before:bottom-0 before:-z-10 before:border-2 before:border-black before:bg-white before:content-[''];
   }
   .hover-RectangleSelf {
-    @apply before:duration-150 hover:before:border-primary hover:before:left-4 hover:before:-right-4 hover:before:top-4 hover:before:-bottom-4;
+    @apply before:duration-150 hover:before:left-4 hover:before:-right-4 hover:before:top-4 hover:before:-bottom-4 hover:before:border-primary;
   }
   .container {
-    @apply max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl
+    @apply max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl;
+  }
+  .completed_true {
+    @apply text-primary line-through;
+  }
+  .completed_false {
+    @apply text-black no-underline;
   }
 }
 
 .i-faX {
-
   display: none;
 }
-li:hover> .i-faX {
+li:hover > .i-faX {
   display: block;
   cursor: pointer;
 }
@@ -46,7 +52,6 @@ li:hover> .i-faX {
   opacity: 1;
   transition: 0.2s ease-in;
 }
-
 
 .close {
   visibility: hidden;
