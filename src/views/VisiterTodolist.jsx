@@ -12,7 +12,7 @@ const baseUrl = "https://fathomless-brushlands-42339.herokuapp.com/todo8";
 function VisiterTodolist() {
   const [events, setEvents] = useState([]);
   // const [key, setKey] = useState(1);
-  const [switchOptions, setSwitchOptions] = useState('')
+  const [switchOptions, setSwitchOptions] = useState("");
   const [input, setInput] = useState("");
   const [isPending, setIsPending] = useState(false);
   const fetchData = async () => {
@@ -22,16 +22,16 @@ function VisiterTodolist() {
     setIsPending(false);
   };
 
-
-
   //每當useEffect依賴項變動，就再重複執行一次useEffect，這裡用key值表示
   //不過由於fetchData變數函式被直接拆到外層scope宣告，所以直接在任何地方呼叫fetchData即可
-  useEffect(() => {
-    fetchData();
-  }, /*[key]*/[]);
+  useEffect(
+    () => {
+      fetchData();
+    },
+    /*[key]*/ []
+  );
 
   const handleInput = (e) => {
-
     setInput(e.target.value);
   };
 
@@ -41,7 +41,7 @@ function VisiterTodolist() {
     } else {
       const obj = {
         content: input,
-        completed_at: 'inProgrees',
+        completed_at: "inProgrees",
       };
       return obj;
     }
@@ -70,14 +70,15 @@ function VisiterTodolist() {
     setIsPending(false);
   };
   const handleStatus = async (index) => {
-    const completed_at = events[index].completed_at === 'inProgrees' ?  'isDone' : 'inProgrees'
+    const completed_at =
+      events[index].completed_at === "inProgrees" ? "isDone" : "inProgrees";
 
     const obj = {
       completed_at: completed_at,
     };
     setIsPending(true);
     const res = await axios.patch(`${baseUrl}/${events[index].id}`, obj);
-    fetchData()
+    fetchData();
   };
 
   const clearAll = () => {
@@ -91,34 +92,30 @@ function VisiterTodolist() {
   };
 
   const todosCount = () => {
-    const inProgreesCounts = events.filter(event => event.completed_at === 'inProgrees').length
-    return inProgreesCounts
-  }
+    const inProgreesCounts = events.filter(
+      (event) => event.completed_at === "inProgrees"
+    ).length;
+    return inProgreesCounts;
+  };
 
   //switch panel
-    const showTodo = (index) => {
-      if(switchOptions === 'inProgrees' || switchOptions === 'isDone'){
-        return events[index].completed_at === switchOptions ? 'block' : 'hidden'
-      }else {
-        return true
-      }
+  const showTodo = (index) => {
+    if (switchOptions === "inProgrees" || switchOptions === "isDone") {
+      return events[index].completed_at === switchOptions ? "block" : "hidden";
+    } else {
+      return true;
     }
-  
-    const switchToAll = () => {
-      setSwitchOptions('')
-    }
-    const switchToInProgress = () => {
-      setSwitchOptions('inProgrees')
-    }
-    const switchToIsdone = () => {
-      setSwitchOptions('isDone')
-    }
+  };
 
- 
-
-  
-
-
+  const switchToAll = () => {
+    setSwitchOptions("");
+  };
+  const switchToInProgress = () => {
+    setSwitchOptions("inProgrees");
+  };
+  const switchToIsdone = () => {
+    setSwitchOptions("isDone");
+  };
 
   return (
     <>
@@ -195,25 +192,27 @@ function VisiterTodolist() {
                 return (
                   <li
                     key={event.id}
-                    className={`flex items-center justify-between py-5 ${showTodo(index)}`}
+                    className={`flex items-center justify-between py-5 ${showTodo(
+                      index
+                    )}`}
                   >
                     <div className="flex items-center">
                       {/*
                       直接發api patch請求修改completed_at，並重發api（重設key值）以便重新渲染頁面
                       */}
-                      {event.completed_at === 'isDone' && (
+                      {event.completed_at === "isDone" && (
                         <FontAwesomeIcon
                           icon={faCheck}
                           className="h-6 w-6 text-primary"
                         />
                       )}
-                      {event.completed_at === 'inProgrees' && (
+                      {event.completed_at === "inProgrees" && (
                         <div className="h-6 w-6 border-2 border-black"></div>
                       )}
                       <p
                         onClick={() => handleStatus(index)}
                         className={`ml-7 cursor-pointer hover:line-through ${
-                          event.completed_at === 'isDone'
+                          event.completed_at === "isDone"
                             ? "completed_true"
                             : "completed_false"
                         }`}
