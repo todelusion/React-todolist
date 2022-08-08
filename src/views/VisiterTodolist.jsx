@@ -9,25 +9,29 @@ import LoadingModal from "../components/LoadingModal";
 
 const baseUrl = "https://fathomless-brushlands-42339.herokuapp.com/todo8";
 
-const eventStatusList = ["inProgrees", "isDone"];
-
 function VisiterTodolist() {
   const [events, setEvents] = useState([]);
-  const [key, setKey] = useState(1);
+  // const [key, setKey] = useState(1);
+  const [switchOptions, setSwitchOptions] = useState('')
   const [input, setInput] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const fetchData = async () => {
+    const res = await axios.get(baseUrl);
+    console.log(res);
+    setEvents(res.data);
+    setIsPending(false);
+  };
 
+
+
+  //每當useEffect依賴項變動，就再重複執行一次useEffect，這裡用key值表示
+  //不過由於fetchData變數函式被直接拆到外層scope宣告，所以直接在任何地方呼叫fetchData即可
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(baseUrl);
-      console.log(res);
-      setEvents(res.data);
-      setIsPending(false);
-    };
     fetchData();
-  }, [key]);
+  }, /*[key]*/[]);
 
   const handleInput = (e) => {
+
     setInput(e.target.value);
   };
 
@@ -37,7 +41,7 @@ function VisiterTodolist() {
     } else {
       const obj = {
         content: input,
-        completed_at: false,
+        completed_at: 'inProgrees',
       };
       return obj;
     }
@@ -49,7 +53,7 @@ function VisiterTodolist() {
         setIsPending(true);
         setInput("");
         const res = await axios.post(`${baseUrl}`, setTempEvent());
-        setKey(key + 1);
+        fetchData();
       } else {
         alert("欄位不得為空");
       }
@@ -66,12 +70,14 @@ function VisiterTodolist() {
     setIsPending(false);
   };
   const handleStatus = async (index) => {
+    const completed_at = events[index].completed_at === 'inProgrees' ?  'isDone' : 'inProgrees'
+
     const obj = {
-      completed_at: !events[index].completed_at,
+      completed_at: completed_at,
     };
     setIsPending(true);
     const res = await axios.patch(`${baseUrl}/${events[index].id}`, obj);
-    setKey(key + 1);
+    fetchData()
   };
 
   const clearAll = () => {
@@ -83,6 +89,36 @@ function VisiterTodolist() {
     });
     setEvents(events.filter((event) => false));
   };
+
+  const todosCount = () => {
+    const inProgreesCounts = events.filter(event => event.completed_at === 'inProgrees').length
+    return inProgreesCounts
+  }
+
+  //switch panel
+    const showTodo = (index) => {
+      if(switchOptions === 'inProgrees' || switchOptions === 'isDone'){
+        return events[index].completed_at === switchOptions ? 'block' : 'hidden'
+      }else {
+        return true
+      }
+    }
+  
+    const switchToAll = () => {
+      setSwitchOptions('')
+    }
+    const switchToInProgress = () => {
+      setSwitchOptions('inProgrees')
+    }
+    const switchToIsdone = () => {
+      setSwitchOptions('isDone')
+    }
+
+ 
+
+  
+
+
 
   return (
     <>
@@ -122,54 +158,62 @@ function VisiterTodolist() {
           <div className="h-20 w-40">
             <button
               onClick={clearAll}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full"
+              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
             >
               Clear All
             </button>
           </div>
           <div className="h-20 w-40">
             <button
-              onClick={clearAll}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full"
+              onClick={switchToAll}
+              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
             >
-              Clear All
+              ALL
             </button>
           </div>
           <div className="h-20 w-40">
             <button
-              onClick={clearAll}
-              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full"
+              onClick={switchToInProgress}
+              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
             >
-              Clear All
+              inProgrees
+            </button>
+          </div>
+          <div className="h-20 w-40">
+            <button
+              onClick={switchToIsdone}
+              className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf h-full tracking-widest"
+            >
+              isDone
             </button>
           </div>
         </div>
         <div className="freeze-RectangleContainer freeze-RectangleSelf px-16 py-10">
-          <ul>
+          <ul className="mb-5">
             {true &&
               events.map((event, index) => {
                 return (
                   <li
                     key={event.id}
-                    className="flex items-center justify-between py-5"
+                    className={`flex items-center justify-between py-5 ${showTodo(index)}`}
                   >
                     <div className="flex items-center">
                       {/*
-                直接發api patch請求修改completed_at，並重發api（重設key值）以便重新渲染頁面
-                */}
-                      {event.completed_at && (
+                      直接發api patch請求修改completed_at，並重發api（重設key值）以便重新渲染頁面
+                      */}
+                      {event.completed_at === 'isDone' && (
                         <FontAwesomeIcon
                           icon={faCheck}
                           className="h-6 w-6 text-primary"
                         />
                       )}
-                      {!event.completed_at && (
+                      {event.completed_at === 'inProgrees' && (
                         <div className="h-6 w-6 border-2 border-black"></div>
                       )}
                       <p
                         onClick={() => handleStatus(index)}
                         className={`ml-7 cursor-pointer hover:line-through ${
-                          event.completed_at === true
+                          event.completed_at === 'isDone'
                             ? "completed_true"
                             : "completed_false"
                         }`}
@@ -186,6 +230,7 @@ function VisiterTodolist() {
                 );
               })}
           </ul>
+          <p className="text-right">{todosCount()}個待完成項目</p>
         </div>
       </section>
       <div className={`${isPending === true ? "show" : "close"}`}>
