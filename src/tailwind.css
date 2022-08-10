@@ -8,6 +8,12 @@
   body {
     @apply box-border bg-white;
   }
+  input {
+    @apply outline-none;
+  }
+  button {
+    @apply outline-none;
+  }
 }
 
 @layer components {
@@ -43,10 +49,10 @@
   }
 
   .freeze-RectangleContainer {
-    @apply relative -ml-5 w-full border-2 border-black bg-white;
+    @apply relative w-full border-2 border-black bg-white;
   }
   .freeze-RectangleSelf {
-    @apply before:absolute before:left-4 before:-right-4 before:top-4 before:-bottom-4 before:-z-10 before:border-2 before:border-black before:bg-white before:content-[''];
+    @apply before:absolute before:-z-10 before:border-2 before:border-black before:bg-white before:content-[''] xs:before:left-4 xs:before:-right-4 xs:before:top-4 xs:before:-bottom-4;
   }
   .container {
     @apply max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl;

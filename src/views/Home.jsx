@@ -19,9 +19,26 @@ export default function Home() {
           To Do
         </h1>
       </div>
-      <section className="container mx-auto flex h-screen items-center">
-        <div className="freeze-RectangleContainer freeze-RectangleSelf px-16 py-10">
-          TEST
+      <section className="mx-auto flex h-screen items-center">
+        <div className="freeze-RectangleContainer freeze-RectangleSelf container mx-auto">
+          <ul className="pt-12 pl-20 pr-14 pb-32 font-light">
+            <li className="mb-20">
+              <p className="text-2xl">EMAIL</p>
+              <input type="text" className="w-full border-b-2 border-black" />
+            </li>
+            <li className="mb-20">
+              <p className="text-2xl">PASSWORD</p>
+              <input type="text" className="w-full border-b-2 border-black" />
+            </li>
+            <li className="text-xl">
+              <div>
+                <button>訪客登入</button>
+                <span className="mx-5 h-4 border-l border-black"></span>
+                <button>登入</button>
+              </div>
+            </li>
+            <li>4</li>
+          </ul>
         </div>
       </section>
     </>
