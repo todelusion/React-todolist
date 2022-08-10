@@ -63,6 +63,9 @@
   .completed_false {
     @apply text-black no-underline;
   }
+  .login-regist-wrapper {
+    @apply pt-12 pl-20 pr-14 pb-32 md:pl-16 md:pt-28 md:pr-64
+  }
 }
 
 .i-faX {

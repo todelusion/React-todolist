@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom"
 
 export default function Home() {
   const [isPending, setIsPending] = useState(false);
@@ -20,24 +21,23 @@ export default function Home() {
         </h1>
       </div>
       <section className="mx-auto flex h-screen items-center">
-        <div className="freeze-RectangleContainer freeze-RectangleSelf container mx-auto">
-          <ul className="pt-12 pl-20 pr-14 pb-32 font-light">
+        <div className="relative freeze-RectangleContainer freeze-RectangleSelf container mx-auto">
+          <h2 className="absolute top-1 left-1 font-dela">LOGIN</h2>
+          <ul className="login-regist-wrapper font-light">
             <li className="mb-20">
               <p className="text-2xl">EMAIL</p>
-              <input type="text" className="w-full border-b-2 border-black" />
+              <input type="email" className="w-full border-b-2 border-black" />
             </li>
             <li className="mb-20">
               <p className="text-2xl">PASSWORD</p>
-              <input type="text" className="w-full border-b-2 border-black" />
+              <input type="password" className="w-full border-b-2 border-black" />
             </li>
             <li className="text-xl">
-              <div>
-                <button>訪客登入</button>
-                <span className="mx-5 h-4 border-l border-black"></span>
-                <button>登入</button>
-              </div>
-            </li>
-            <li>4</li>
+              <Link to="/visiterTodolist"><p className="underline underline-offset-1 inline-block">訪客登入</p></Link>
+              <span className="mx-5 border-l h-4 border-black inline-block"></span>
+              <Link to="/visiterTodolist"><p className="underline underline-offset-1 inline-block mb-20">登入</p></Link>
+              <p className="block underline text-primary text-base">註冊</p>
+          </li>
           </ul>
         </div>
       </section>
