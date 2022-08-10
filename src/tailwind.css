@@ -42,7 +42,6 @@
     @apply before:duration-150 hover:before:left-1 hover:before:-right-1 hover:before:top-1 hover:before:-bottom-1 hover:before:border-primary;
   }
 
-
   .freeze-RectangleContainer {
     @apply relative -ml-5 w-full border-2 border-black bg-white;
   }

@@ -15,6 +15,7 @@ function VisiterTodolist() {
   const [switchOptions, setSwitchOptions] = useState("");
   const [input, setInput] = useState("");
   const [isPending, setIsPending] = useState(false);
+
   const fetchData = async () => {
     const res = await axios.get(baseUrl);
     console.log(res);
@@ -146,40 +147,40 @@ function VisiterTodolist() {
           />
           <button
             onClick={handleEvent}
-            className="ml-7 rounded-[100%] border-2 border-black px-3 md:px-14 py-3 outline-none duration-100 hover:scale-105 hover:bg-primary hover:text-white"
+            className="ml-7 rounded-[100%] border-2 border-black px-3 py-3 outline-none duration-100 hover:scale-105 hover:bg-primary hover:text-white md:px-14"
           >
             ADD
           </button>
         </div>
         <div className="mb-10 flex w-full justify-between">
-          <div className="h-20 w-20 md:w-40 p-1 md:p-0">
+          <div className="h-20 w-20 p-1 md:w-40 md:p-0">
             <button
               onClick={clearAll}
-              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
+              className="btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full p-3 text-xs tracking-widest md:text-base"
             >
               Clear All
             </button>
           </div>
-          <div className="h-20 md:w-40 p-1 md:p-0">
+          <div className="h-20 p-1 md:w-40 md:p-0">
             <button
               onClick={switchToAll}
-              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
+              className="btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full p-3 text-xs tracking-widest md:text-base"
             >
               ALL
             </button>
           </div>
-          <div className="h-20 md:w-40 p-1 md:p-0">
+          <div className="h-20 p-1 md:w-40 md:p-0">
             <button
               onClick={switchToInProgress}
-              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
+              className="btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full p-3 text-xs tracking-widest md:text-base"
             >
               inProgrees
             </button>
           </div>
-          <div className="h-20 md:w-40 p-1 md:p-0">
+          <div className="h-20 p-1 md:w-40 md:p-0">
             <button
               onClick={switchToIsdone}
-              className="p-3 text-xs md:text-base btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full tracking-widest"
+              className="btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full p-3 text-xs tracking-widest md:text-base"
             >
               isDone
             </button>
@@ -207,11 +208,11 @@ function VisiterTodolist() {
                         />
                       )}
                       {event.completed_at === "inProgrees" && (
-                        <div className="p-2 border-2 border-black"></div>
+                        <div className="border-2 border-black p-2"></div>
                       )}
                       <p
                         onClick={() => handleStatus(index)}
-                        className={`block ml-7 cursor-pointer break-all hover:line-through ${
+                        className={`ml-7 block cursor-pointer break-all hover:line-through ${
                           event.completed_at === "isDone"
                             ? "completed_true"
                             : "completed_false"
