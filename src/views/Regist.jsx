@@ -19,10 +19,11 @@ export default function Regist({ baseUrl }) {
 
   const [isPending, setIsPending] = useState(false);
   const [isError, setIsError] = useState(false)
+  const [isShow, setIsShow] = useState(false)
+  console.log(isShow)
   
-
+  const emailRegexr = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
   const navigate = useNavigate();
-
   const handleRegist = async () => {
     const obj = {
       user: {
@@ -53,11 +54,16 @@ export default function Regist({ baseUrl }) {
         <Body_RectangleWrap bodyTitle="Regist">
           <ul className="pt-12 pl-20 pr-14 pb-14 font-light md:pl-16 md:pt-20 md:pr-64">
             <li className="mb-12">
-              <p className="text-lg">EMAIL</p>
+              <p className="text-lg">EMAIL
+              {isShow  && <span className="ml-3 text-sm text-red-600">電子郵件格式錯誤</span>}
+              </p>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  email.match({emailRegexr}) ? setIsShow(false) : setIsShow(true)
+                }}
                 className="w-full border-b-2 border-black"
               />
             </li>
