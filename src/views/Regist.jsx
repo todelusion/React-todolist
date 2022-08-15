@@ -12,40 +12,58 @@ import ErrorModal from "../components/ErrorModal";
 
 
 export default function Regist({ baseUrl }) {
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState({})
+
+
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
 
+  const handleChange = (e) => {
+    const tempInputValue = inputValue
+    console.log(tempInputValue)
+    tempInputValue['email'] = e.target.value
+    tempInputValue['password'] = e.target.value
+  }
+
+
   const [isPending, setIsPending] = useState(false);
   const [isError, setIsError] = useState(false)
-  const [isShow, setIsShow] = useState(false)
-  console.log(isShow)
+
+  const [registStatus, setRegistStatus] = useState({})
   
   const emailRegexr = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
-  const navigate = useNavigate();
   const handleRegist = async () => {
     const obj = {
       user: {
-        email: email,
-        nickname: nickName,
-        password: password,
+        email: inputValue['email'],
+        nickname: inputValue['nickName'],
+        password: inputValue['password'],
       },
     };
+    console.log(obj)
 
-    setIsPending(true);
-    try {
-      const res = await axios.post(`${baseUrl}/users`, obj);
-      console.log(res);
-      navigate("/", { replace: true });
-    }catch (err){
-        setIsPending(false)
-        setIsError(true);
-        setTimeout(() => setIsError(false), 1000)
-    }
+    // setIsPending(true);
+    // try {
+    //   const res = await axios.post(`${baseUrl}/users`, obj);
+    //   console.log(res);
+    //   navigate("/", { replace: true });
+    // }catch (err){
+    //     setIsPending(false)
+    //     setIsError(true);
+    //     setTimeout(() => setIsError(false), 1000)
+    // }
   
 
-};
+  };
+  // const handleRegistStatus = () => {
+  //   let tempRegistStatus = {}
+  //   email.match({emailRegexr}) ? tempRegistStatus['emailError'] = false : tempRegistStatus['emailError'] = true
+  //   nickName.length > 4 ? tempRegistStatus['nickNameError'] = false : tempRegistStatus['nickNameError'] = true
+  //   setRegistStatus(tempRegistStatus)
+  //   console.log(registStatus['nickNameError'])
+  // }
 
   return (
     <>
@@ -55,24 +73,27 @@ export default function Regist({ baseUrl }) {
           <ul className="pt-12 pl-20 pr-14 pb-14 font-light md:pl-16 md:pt-20 md:pr-64">
             <li className="mb-12">
               <p className="text-lg">EMAIL
-              {isShow  && <span className="ml-3 text-sm text-red-600">電子郵件格式錯誤</span>}
+              {false && <span className="ml-3 text-sm text-red-600">電子郵件格式錯誤</span>}
               </p>
               <input
                 type="email"
-                value={email}
+                value={inputValue['email']}
                 onChange={(e) => {
-                  setEmail(e.target.value)
-                  email.match({emailRegexr}) ? setIsShow(false) : setIsShow(true)
+                  handleChange(e.target.value)
                 }}
                 className="w-full border-b-2 border-black"
               />
             </li>
             <li className="mb-12">
-              <p className="text-lg">NICKNAME</p>
+              <p className="text-lg">NICKNAME
+               {false && <span className="ml-3 text-sm text-red-600">至少五個字</span>}
+              </p>
               <input
                 type="text"
-                value={nickName}
-                onChange={(e) => setNickName(e.target.value)}
+                value={inputValue['nickName']}
+                onChange={(e) => {
+                  handleChange(e.target.value)
+                }}
                 className="w-full border-b-2 border-black"
               />
             </li>
