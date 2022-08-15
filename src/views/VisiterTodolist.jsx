@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -222,7 +221,7 @@ function VisiterTodolist() {
         </div>
       </section>
       <div className={`${isPending === true ? "show" : "close"}`}>
-        <LoadingModal modalMessage="讀取中" />
+        <LoadingModal modalMessage="處理中" />
       </div>
     </>
   );

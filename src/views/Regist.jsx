@@ -13,27 +13,29 @@ import ErrorModal from "../components/ErrorModal";
 
 export default function Regist({ baseUrl }) {
   const navigate = useNavigate();
-  const [inputValue, setInputValue] = useState({})
 
-
-  const [nickName, setNickName] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
-
-  const handleChange = (e) => {
-    const tempInputValue = inputValue
-    console.log(tempInputValue)
-    tempInputValue['email'] = e.target.value
-    tempInputValue['password'] = e.target.value
-  }
-
-
+  //待合併的鉤子
   const [isPending, setIsPending] = useState(false);
   const [isError, setIsError] = useState(false)
+  //待合併的鉤子
 
-  const [registStatus, setRegistStatus] = useState({})
   
-  const emailRegexr = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+  const [inputValue, setInputValue] = useState({
+    email: '',
+    nickName: '',
+    password: '',
+    checkPassword: ''
+  })
+  
+  const emailRegexr = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
+
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    const tempInputValue = {...inputValue, [name]: value}
+    setInputValue(tempInputValue)
+    console.log(!(inputValue['password'] == inputValue['checkPassword']))
+  }
+
   const handleRegist = async () => {
     const obj = {
       user: {
@@ -73,45 +75,54 @@ export default function Regist({ baseUrl }) {
           <ul className="pt-12 pl-20 pr-14 pb-14 font-light md:pl-16 md:pt-20 md:pr-64">
             <li className="mb-12">
               <p className="text-lg">EMAIL
-              {false && <span className="ml-3 text-sm text-red-600">電子郵件格式錯誤</span>}
+              {!inputValue['email'].match(emailRegexr) && <span className='ml-3 text-sm text-red-600'>電子郵件格式錯誤</span>}
               </p>
               <input
                 type="email"
+                name="email"
                 value={inputValue['email']}
                 onChange={(e) => {
-                  handleChange(e.target.value)
+                  handleChange(e)
                 }}
                 className="w-full border-b-2 border-black"
               />
             </li>
             <li className="mb-12">
               <p className="text-lg">NICKNAME
-               {false && <span className="ml-3 text-sm text-red-600">至少五個字</span>}
+               {inputValue['nickName'].length == 0 && <span className="ml-3 text-sm text-red-600">不得為空</span>}
               </p>
               <input
                 type="text"
+                name="nickName"
                 value={inputValue['nickName']}
                 onChange={(e) => {
-                  handleChange(e.target.value)
+                  handleChange(e)
                 }}
                 className="w-full border-b-2 border-black"
               />
             </li>
             <li className="mb-12">
-              <p className="text-lg">PASSWORD</p>
+              <p className="text-lg">
+                PASSWORD
+                {inputValue['password'].length <= 5 && <span className="ml-3 text-sm text-red-600">至少六個字</span>}
+              </p>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={inputValue['password']}
+                onChange={(e) => handleChange(e)}
                 className="w-full border-b-2 border-black"
               />
             </li>
             <li className="mb-20">
-              <p className="text-lg">Confirm the PASSWORD</p>
+              <p className="text-lg">Confirm the PASSWORD
+              {!(inputValue['password'] == inputValue['checkPassword']) && <span className="ml-3 text-sm text-red-600">密碼不相同</span>}
+              </p>
               <input
                 type="password"
-                value={checkPassword}
-                onChange={(e) => setCheckPassword(e.target.value)}
+                name="checkPassword"
+                value={inputValue['checkPassword']}
+                onChange={(e) => handleChange(e)}
                 className="w-full border-b-2 border-black"
               />
             </li>
