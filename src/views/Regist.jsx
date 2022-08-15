@@ -8,15 +8,21 @@ import Body_RectangleWrap from "../components/Body_RectangleWrap";
 import Nav from "./Nav";
 import Layout_Hscreen from "../Layout/Layout_Hscreen";
 import LoadingModal from "../components/LoadingModal";
+import ErrorModal from "../components/ErrorModal";
+
 
 export default function Regist({ baseUrl }) {
   const [email, setEmail] = useState("");
   const [nickName, setNickName] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+
   const [isPending, setIsPending] = useState(false);
+  const [isError, setIsError] = useState(false)
+  
 
   const navigate = useNavigate();
+
   const handleRegist = async () => {
     const obj = {
       user: {
@@ -25,15 +31,20 @@ export default function Regist({ baseUrl }) {
         password: password,
       },
     };
+
     setIsPending(true);
     try {
       const res = await axios.post(`${baseUrl}/users`, obj);
       console.log(res);
       navigate("/", { replace: true });
-    } catch (err) {
-      setIsPending(false);
+    }catch (err){
+        setIsPending(false)
+        setIsError(true);
+        setTimeout(() => setIsError(false), 1000)
     }
-  };
+  
+
+};
 
   return (
     <>
@@ -93,6 +104,9 @@ export default function Regist({ baseUrl }) {
       </Layout_Hscreen>
       <div className={`${isPending ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
+      </div>
+      <div className={`${isError ? "show" : "close"}`}>
+        <ErrorModal modalMessage="註冊失敗" />
       </div>
     </>
   );
