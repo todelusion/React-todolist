@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,7 +7,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 import LoadingModal from "../components/LoadingModal";
-import Nav from "./Nav"
+import Nav from "./Nav";
 
 const baseUrl = "https://fathomless-brushlands-42339.herokuapp.com/todo8";
 
@@ -122,7 +122,7 @@ function VisiterTodolist() {
 
   return (
     <>
-      <Nav isPending={isPending}/>
+      <Nav isPending={isPending} />
       <section className="container mx-auto mb-20 mt-32 flex flex-col items-center">
         <div className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf mb-10 flex  items-center py-5 pl-10 pr-7">
           <input
