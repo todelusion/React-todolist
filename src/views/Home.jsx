@@ -28,7 +28,7 @@ export default function Home() {
               <span className="mx-5 border-l h-4 border-black inline-block"></span>
               <Link to="/visiterTodolist"><p className="underline underline-offset-1 inline-block mb-20">登入</p></Link>
               <Link to="/regist"><p className="block underline text-primary text-base">註冊</p></Link>
-          </li>
+            </li>
           </ul>
         </Body_RectangleWrap>
       </Layout_Hscreen>

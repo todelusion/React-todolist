@@ -222,7 +222,7 @@ function VisiterTodolist() {
         </div>
       </section>
       <div className={`${isPending === true ? "show" : "close"}`}>
-        <LoadingModal />
+        <LoadingModal modalMessage="讀取中" />
       </div>
     </>
   );
