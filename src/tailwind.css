@@ -66,6 +66,9 @@
   .login-regist-wrapper {
     @apply pt-12 pl-20 pr-14 pb-32 md:pl-16 md:pt-28 md:pr-64;
   }
+  .errorMessage {
+    @apply block mb-2 sm:inline sm:ml-3 sm:mb-0 text-sm text-red-600
+  }
 }
 
 .i-faX {

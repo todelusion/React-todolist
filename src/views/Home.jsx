@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import Layout_Hscreen from "../Layout/Layout_Hscreen";
 import Body_RectangleWrap from "../components/Body_RectangleWrap";
 import List_Input from "../components/List_Input";
-import Layout_Hscreen from "../Layout/Layout_Hscreen";
 import LoadingModal from "../components/LoadingModal";
 import ErrorModal from "../components/ErrorModal";
+
+import useLoading from "../hooks/useLoading";
+import useInputChange from "../hooks/useInputChange";
 
 import Nav from "./Nav";
 // sdfcvdf@gmail.com
@@ -16,22 +19,17 @@ export default function Home({ baseUrl }) {
   const emailRegexr =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
 
-  const [inputValue, setInputValue] = useState({
+  
+  const [inputValue, setInputValue] = useInputChange({
     email: "",
     password: "",
-  });
-  const [isPending, setIsPending] = useState({
+  })
+
+  const [isLoading, setIsLoading] = useLoading({
     isPending: false,
     isError: false,
     isSuccess: false,
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputValue((prevState) => {
-      return { ...prevState, [name]: value };
-    });
-  };
+  })
 
   const handleSubmit = async () => {
     const obj = {
@@ -40,35 +38,22 @@ export default function Home({ baseUrl }) {
         password: inputValue["password"],
       },
     };
-    console.log(obj);
-    setIsPending((prevState) => {
-      return { ...prevState, isPending: true };
-    });
-
+    setIsLoading('isPending', true)
     try {
-      await axios.post(`${baseUrl}/users/sign_in`, obj);
-      alert('登入成功')
+      const res = await axios.post(`${baseUrl}/users/sign_in`, obj);
+      console.log(res)
+      setIsLoading('isPending', false)
       // navigate("/", { replace: true });
     } catch (err) {
-      setIsPending((prevState) => {
-        return { ...prevState, isPending: false };
-      });
-      setIsPending((prevState) => {
-        return { ...prevState, isError: true };
-      });
-      setTimeout(
-        () =>
-          setIsPending((prevState) => {
-            return { ...prevState, isError: false };
-          }),
-        1000
-      );
+      setIsLoading('isPending', false)
+      setIsLoading('isError', true)
+      setTimeout(() => setIsLoading('isError', false) ,1000);
     }
   };
 
   return (
     <>
-      <Nav isPending={isPending["isPending"]} />
+      <Nav isLoading={isLoading['isPending']} />
       <Layout_Hscreen>
         <Body_RectangleWrap bodyTitle="Login">
           <ul className="login-regist-wrapper font-light">
@@ -76,13 +61,13 @@ export default function Home({ baseUrl }) {
               tilte="EMAIL"
               inputName="email"
               inputType="email"
-              onHandleChange={handleChange}
               inputValue={inputValue}
+              setInputValue={setInputValue}
               className_li="mb-20"
               className_p="text-2xl"
             >
               {!inputValue["email"].match(emailRegexr) && (
-                <span className="ml-3 text-sm text-red-600">
+                <span className="errorMessage">
                   電子郵件格式錯誤
                 </span>
               )}
@@ -91,13 +76,13 @@ export default function Home({ baseUrl }) {
               tilte="PASSWORD"
               inputName="password"
               inputType="text"
-              onHandleChange={handleChange}
               inputValue={inputValue}
+              setInputValue={setInputValue}
               className_li="mb-20"
               className_p="text-2xl"
             >
               {inputValue["password"].length == 0 && (
-                <span className="ml-3 text-sm text-red-600">不得為空</span>
+                <span className="errorMessage">不得為空</span>
               )}
             </List_Input>
             <li className="text-xl">
@@ -120,10 +105,10 @@ export default function Home({ baseUrl }) {
           </ul>
         </Body_RectangleWrap>
       </Layout_Hscreen>
-      <div className={`${isPending["isPending"] ? "show" : "close"}`}>
+      <div className={`${isLoading["isPending"] ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
       </div>
-      <div className={`${isPending["isError"] ? "show" : "close"}`}>
+      <div className={`${isLoading["isError"] ? "show" : "close"}`}>
         <ErrorModal modalMessage="登入失敗" />
       </div>
     </>

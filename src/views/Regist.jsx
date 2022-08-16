@@ -3,6 +3,8 @@ import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import useLoading from "../hooks/useLoading";
+import useInputChange from "../hooks/useInputChange";
 
 import Nav from "./Nav";
 import Layout_Hscreen from "../Layout/Layout_Hscreen";
@@ -14,25 +16,33 @@ import ErrorModal from "../components/ErrorModal";
 export default function Regist({ baseUrl }) {
   const navigate = useNavigate();
 
-  const [inputValue, setInputValue] = useState({
+  // const [inputValue, setInputValue] = useState({
+  //   email: "",
+  //   nickName: "",
+  //   password: "",
+  //   checkPassword: "",
+  // });
+
+  const [inputValue, setInputValue] = useInputChange({
     email: "",
     nickName: "",
     password: "",
     checkPassword: "",
-  });
+  })
+  console.log(inputValue)
 
-  const [isPending, setIsPending] = useState({
+  const [isLoading, setIsLoading] = useLoading({
     isPending: false,
     isError: false,
     isSuccess: false,
-  });
+  })
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputValue((prevState) => {
-      return { ...prevState, [name]: value };
-    });
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setInputValue((prevState) => {
+  //     return { ...prevState, [name]: value };
+  //   });
+  // };
 
   const emailRegexr =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
@@ -47,26 +57,14 @@ export default function Regist({ baseUrl }) {
     };
     console.log(obj);
 
-    setIsPending((prevState) => {
-      return { ...prevState, isPending: true };
-    });
+    setIsLoading('isPending', true)
     try {
       await axios.post(`${baseUrl}/users`, obj);
       navigate("/", { replace: true });
     } catch (err) {
-      setIsPending((prevState) => {
-        return { ...prevState, isPending: false };
-      });
-      setIsPending((prevState) => {
-        return { ...prevState, isError: true };
-      });
-      setTimeout(
-        () =>
-          setIsPending((prevState) => {
-            return { ...prevState, isError: false };
-          }),
-        1000
-      );
+      setIsLoading('isPending', false)
+      setIsLoading('isError', true)
+      setTimeout(() => setIsLoading('isError', false), 1000);
     }
   };
 
@@ -80,13 +78,13 @@ export default function Regist({ baseUrl }) {
               tilte="EMAIL"
               inputName="email"
               inputType="email"
-              onHandleChange={handleChange}
               inputValue={inputValue}
+              setInputValue={setInputValue}
               className_li="mb-12"
               className_p="text-lg"
             >
               {!inputValue["email"].match(emailRegexr) && (
-                <span className="ml-3 text-sm text-red-600">
+                <span className="errorMessage">
                   電子郵件格式錯誤
                 </span>
               )}
@@ -94,41 +92,41 @@ export default function Regist({ baseUrl }) {
 
             <List_Input
               tilte="NICKNAME"
-              inputName="nickname"
+              inputName="nickName"
               inputType="text"
-              onHandleChange={handleChange}
               inputValue={inputValue}
+              setInputValue={setInputValue}
               className_li="mb-12"
               className_p="text-lg"
             >
               {inputValue["nickName"].length == 0 && (
-                <span className="ml-3 text-sm text-red-600">不得為空</span>
+                <span className="errorMessage">不得為空</span>
               )}
             </List_Input>
             <List_Input
               tilte="PASSWORD"
               inputName="password"
               inputType="password"
-              onHandleChange={handleChange}
               inputValue={inputValue}
+              setInputValue={setInputValue}
               className_li="mb-12"
               className_p="text-lg"
             >
               {inputValue["password"].length <= 5 && (
-                <span className="ml-3 text-sm text-red-600">至少六個字</span>
+                <span className="errorMessage">至少六個字</span>
               )}
             </List_Input>
             <List_Input
               tilte="checkPASSWORD"
               inputName="checkPassword"
               inputType="password"
-              onHandleChange={handleChange}
               inputValue={inputValue}
+              setInputValue={setInputValue}
               className_li="mb-12"
               className_p="text-lg"
             >
               {!(inputValue["password"] == inputValue["checkPassword"]) && (
-                <span className="ml-3 text-sm text-red-600">密碼不相同</span>
+                <span className="errorMessage">密碼不相同</span>
               )}
             </List_Input>
             <li className="flex items-end justify-between text-xl">
@@ -145,13 +143,13 @@ export default function Regist({ baseUrl }) {
           </ul>
         </Body_RectangleWrap>
       </Layout_Hscreen>
-      <div className={`${isPending["isPending"] ? "show" : "close"}`}>
+      <div className={`${isLoading["isPending"] ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
       </div>
-      <div className={`${isPending["isError"] ? "show" : "close"}`}>
+      <div className={`${isLoading["isError"] ? "show" : "close"}`}>
         <ErrorModal modalMessage="註冊失敗" />
       </div>
-      <div className={`${isPending["isSuccess"] ? "show" : "close"}`}>
+      <div className={`${isLoading["isSuccess"] ? "show" : "close"}`}>
         <ErrorModal modalMessage="註冊成功" />
       </div>
     </>

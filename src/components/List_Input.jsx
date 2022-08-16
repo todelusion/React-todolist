@@ -4,8 +4,8 @@ export default function List_Input({
   tilte,
   inputName,
   inputType,
-  onHandleChange,
   inputValue,
+  setInputValue,
   children,
   className_li,
   className_p,
@@ -19,7 +19,7 @@ export default function List_Input({
       <input
         value={{ inputValue }[{ inputName }]}
         name={inputName}
-        onChange={(e) => onHandleChange(e)}
+        onChange={(e) => setInputValue(e)}
         type={inputType}
         className="w-full border-b-2 border-black"
       />
