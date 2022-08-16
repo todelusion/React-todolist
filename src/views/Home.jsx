@@ -1,38 +1,57 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
+
+
 import Body_RectangleWrap from "../components/Body_RectangleWrap";
+import List_Input from "../components/List_Input";
 import Nav from "./Nav";
 import Layout_Hscreen from "../Layout/Layout_Hscreen";
 
-export default function Home() {
-  const [isPending, setIsPending] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+// sdfcvdf@gmail.com
+// sdfcvdf
+
+export default function Home({ baseUrl }) {
+  const [inputValue, setInputValue] = useState({
+    email: '',
+    password: ''
+  });
+  const [isPending, setIsPending] = useState({
+    isPending: false,
+    isError: false,
+    isSuccess: false
+});
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setInputValue(prevState => {
+      return {...prevState, [name]: value}
+    })
+  }
+
+  const handleSubmit = async() => {
+    const obj = {
+      "user": {
+        "email": inputValue['email'],
+        "password": inputValue['password']
+      } 
+    }
+    console.log(obj)
+    // await axios.post(`${baseUrl}/sign_in`)
+  }
+  
 
   return (
     <>
-      <Nav isPending={isPending} />
+      <Nav isPending={isPending['isPending']} />
       <Layout_Hscreen>
         <Body_RectangleWrap bodyTitle="Login">
           <ul className="login-regist-wrapper font-light">
-            <li className="mb-20">
-              <p className="text-2xl">EMAIL</p>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                className="w-full border-b-2 border-black"
-              />
-            </li>
-            <li className="mb-20">
-              <p className="text-2xl">PASSWORD</p>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                className="w-full border-b-2 border-black"
-              />
-            </li>
+            <List_Input tilte="EMAIL" inputName="email" inputType="email" onHandleChange = {handleChange} inputValue={inputValue}></List_Input>
+            <List_Input tilte="PASSWORD" inputName="password" inputType="text" onHandleChange = {handleChange} inputValue={inputValue}></List_Input>
             <li className="text-xl">
               <Link to="/visiterTodolist">
                 <p className="inline-block underline underline-offset-1">
@@ -40,11 +59,9 @@ export default function Home() {
                 </p>
               </Link>
               <span className="mx-5 inline-block h-4 border-l border-black"></span>
-              <Link to="/visiterTodolist">
-                <p className="mb-20 inline-block underline underline-offset-1">
-                  登入
-                </p>
-              </Link>
+              <p onClick={handleSubmit} className="cursor-pointer mb-20 inline-block underline underline-offset-1">
+                登入
+              </p>
               <Link to="/regist">
                 <p className="block text-base text-primary underline">註冊</p>
               </Link>

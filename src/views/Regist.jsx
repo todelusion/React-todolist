@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useInputChange } from "../hooks/useInputChange";
 
 import Body_RectangleWrap from "../components/Body_RectangleWrap";
 import Nav from "./Nav";
@@ -14,27 +15,29 @@ import ErrorModal from "../components/ErrorModal";
 export default function Regist({ baseUrl }) {
   const navigate = useNavigate();
 
-  //待合併的鉤子
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false)
-  //待合併的鉤子
-
-  
   const [inputValue, setInputValue] = useState({
     email: '',
     nickName: '',
     password: '',
     checkPassword: ''
   })
+
+  const [isPending, setIsPending] = useState({
+    isPending: false,
+    isError: false,
+    isSuccess: false
+  });
   
-  const emailRegexr = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
 
   const handleChange = (e) => {
     const {name, value} = e.target
-    const tempInputValue = {...inputValue, [name]: value}
-    setInputValue(tempInputValue)
-    console.log(!(inputValue['password'] == inputValue['checkPassword']))
-  }
+    setInputValue(prevState => {
+      return {...prevState, [name]:value}
+    })
+}
+  
+  
+  const emailRegexr = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
 
   const handleRegist = async () => {
     const obj = {
@@ -46,26 +49,16 @@ export default function Regist({ baseUrl }) {
     };
     console.log(obj)
 
-    // setIsPending(true);
-    // try {
-    //   const res = await axios.post(`${baseUrl}/users`, obj);
-    //   console.log(res);
-    //   navigate("/", { replace: true });
-    // }catch (err){
-    //     setIsPending(false)
-    //     setIsError(true);
-    //     setTimeout(() => setIsError(false), 1000)
-    // }
-  
-
+    setIsPending(prevState => {return{...prevState, isPending: true}});
+    try {
+      const res = await axios.post(`${baseUrl}/users`, obj);
+      navigate("/", { replace: true });
+    }catch (err){
+       setIsPending(prevState => {return{...prevState, isPending: false}})
+       setIsPending(prevState => {return{...prevState, isError: true}})
+       setTimeout(() => setIsPending(prevState => {return{...prevState, isError: false}}), 1000)
+    }
   };
-  // const handleRegistStatus = () => {
-  //   let tempRegistStatus = {}
-  //   email.match({emailRegexr}) ? tempRegistStatus['emailError'] = false : tempRegistStatus['emailError'] = true
-  //   nickName.length > 4 ? tempRegistStatus['nickNameError'] = false : tempRegistStatus['nickNameError'] = true
-  //   setRegistStatus(tempRegistStatus)
-  //   console.log(registStatus['nickNameError'])
-  // }
 
   return (
     <>
@@ -137,14 +130,17 @@ export default function Regist({ baseUrl }) {
                 下一步
               </p>
             </li>
-          </ul>
+          </ul> 
         </Body_RectangleWrap>
       </Layout_Hscreen>
-      <div className={`${isPending ? "show" : "close"}`}>
+      <div className={`${isPending['isPending'] ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
       </div>
-      <div className={`${isError ? "show" : "close"}`}>
+      <div className={`${isPending['isError'] ? "show" : "close"}`}>
         <ErrorModal modalMessage="註冊失敗" />
+      </div>
+      <div className={`${isPending['isSuccess'] ? "show" : "close"}`}>
+        <ErrorModal modalMessage="註冊成功" />
       </div>
     </>
   );
