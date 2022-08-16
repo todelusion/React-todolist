@@ -28,14 +28,12 @@ export default function Regist({ baseUrl }) {
     nickName: "",
     password: "",
     checkPassword: "",
-  })
-  console.log(inputValue)
-
+  });
   const [isLoading, setIsLoading] = useLoading({
     isPending: false,
     isError: false,
     isSuccess: false,
-  })
+  });
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
@@ -57,20 +55,20 @@ export default function Regist({ baseUrl }) {
     };
     console.log(obj);
 
-    setIsLoading('isPending', true)
+    setIsLoading("isPending", true);
     try {
       await axios.post(`${baseUrl}/users`, obj);
       navigate("/", { replace: true });
     } catch (err) {
-      setIsLoading('isPending', false)
-      setIsLoading('isError', true)
-      setTimeout(() => setIsLoading('isError', false), 1000);
+      setIsLoading("isPending", false);
+      setIsLoading("isError", true);
+      setTimeout(() => setIsLoading("isError", false), 1000);
     }
   };
 
   return (
     <>
-      <Nav />
+      <Nav isLoading={isLoading["isPending"]} />
       <Layout_Hscreen>
         <Body_RectangleWrap bodyTitle="Regist">
           <ul className="pt-12 pl-20 pr-14 pb-14 font-light md:pl-16 md:pt-20 md:pr-64">
@@ -84,9 +82,7 @@ export default function Regist({ baseUrl }) {
               className_p="text-lg"
             >
               {!inputValue["email"].match(emailRegexr) && (
-                <span className="errorMessage">
-                  電子郵件格式錯誤
-                </span>
+                <span className="errorMessage">電子郵件格式錯誤</span>
               )}
             </List_Input>
 

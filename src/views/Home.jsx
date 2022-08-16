@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Layout_Hscreen from "../Layout/Layout_Hscreen";
@@ -12,24 +12,25 @@ import useLoading from "../hooks/useLoading";
 import useInputChange from "../hooks/useInputChange";
 
 import Nav from "./Nav";
-// sdfcvdf@gmail.com
-// sdfcvdf
+// fweruoueio@gmail.com
+// fweruoueio
 
 export default function Home({ baseUrl }) {
   const emailRegexr =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
 
-  
+  const navigate = useNavigate();
+
   const [inputValue, setInputValue] = useInputChange({
     email: "",
     password: "",
-  })
+  });
 
   const [isLoading, setIsLoading] = useLoading({
     isPending: false,
     isError: false,
     isSuccess: false,
-  })
+  });
 
   const handleSubmit = async () => {
     const obj = {
@@ -38,22 +39,23 @@ export default function Home({ baseUrl }) {
         password: inputValue["password"],
       },
     };
-    setIsLoading('isPending', true)
+    setIsLoading("isPending", true);
     try {
       const res = await axios.post(`${baseUrl}/users/sign_in`, obj);
-      console.log(res)
-      setIsLoading('isPending', false)
-      // navigate("/", { replace: true });
+      console.log(res);
+      setIsLoading("isPending", false);
+      navigate("/todolist", { replace: true });
     } catch (err) {
-      setIsLoading('isPending', false)
-      setIsLoading('isError', true)
-      setTimeout(() => setIsLoading('isError', false) ,1000);
+      console.log(err);
+      setIsLoading("isPending", false);
+      setIsLoading("isError", true);
+      setTimeout(() => setIsLoading("isError", false), 1000);
     }
   };
 
   return (
     <>
-      <Nav isLoading={isLoading['isPending']} />
+      <Nav isLoading={isLoading["isPending"]} />
       <Layout_Hscreen>
         <Body_RectangleWrap bodyTitle="Login">
           <ul className="login-regist-wrapper font-light">
@@ -67,9 +69,7 @@ export default function Home({ baseUrl }) {
               className_p="text-2xl"
             >
               {!inputValue["email"].match(emailRegexr) && (
-                <span className="errorMessage">
-                  電子郵件格式錯誤
-                </span>
+                <span className="errorMessage">電子郵件格式錯誤</span>
               )}
             </List_Input>
             <List_Input

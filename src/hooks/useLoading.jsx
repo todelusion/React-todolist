@@ -6,10 +6,7 @@ export default function useLoading(init) {
     setIsLoading((prevState) => {
       return { ...prevState, [pendingType]: boolean };
     });
-  }
-
+  };
 
   return [isLoading, handleLoading];
 }
-
-
