@@ -1,19 +1,28 @@
-import React from 'react'
+import React from "react";
 
-export default function List_Input({tilte, inputName, inputType, onHandleChange, inputValue, children}) {
+export default function List_Input({
+  tilte,
+  inputName,
+  inputType,
+  onHandleChange,
+  inputValue,
+  children,
+  className_li,
+  className_p,
+}) {
   return (
-    <li className="mb-20">
-        <p className="text-2xl">
-          {tilte}
-          {children}
-        </p>
-        <input
-        value={{inputValue}[{inputName}]}
+    <li className={className_li}>
+      <p className={className_p}>
+        {tilte}
+        {children}
+      </p>
+      <input
+        value={{ inputValue }[{ inputName }]}
         name={inputName}
         onChange={(e) => onHandleChange(e)}
         type={inputType}
         className="w-full border-b-2 border-black"
-        />
+      />
     </li>
-  )
+  );
 }

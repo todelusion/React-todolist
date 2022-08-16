@@ -3,60 +3,70 @@ import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useInputChange } from "../hooks/useInputChange";
 
-import Body_RectangleWrap from "../components/Body_RectangleWrap";
 import Nav from "./Nav";
 import Layout_Hscreen from "../Layout/Layout_Hscreen";
+import Body_RectangleWrap from "../components/Body_RectangleWrap";
+import List_Input from "../components/List_Input";
 import LoadingModal from "../components/LoadingModal";
 import ErrorModal from "../components/ErrorModal";
-
 
 export default function Regist({ baseUrl }) {
   const navigate = useNavigate();
 
   const [inputValue, setInputValue] = useState({
-    email: '',
-    nickName: '',
-    password: '',
-    checkPassword: ''
-  })
+    email: "",
+    nickName: "",
+    password: "",
+    checkPassword: "",
+  });
 
   const [isPending, setIsPending] = useState({
     isPending: false,
     isError: false,
-    isSuccess: false
+    isSuccess: false,
   });
-  
 
   const handleChange = (e) => {
-    const {name, value} = e.target
-    setInputValue(prevState => {
-      return {...prevState, [name]:value}
-    })
-}
-  
-  
-  const emailRegexr = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g
+    const { name, value } = e.target;
+    setInputValue((prevState) => {
+      return { ...prevState, [name]: value };
+    });
+  };
+
+  const emailRegexr =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
 
   const handleRegist = async () => {
     const obj = {
       user: {
-        email: inputValue['email'],
-        nickname: inputValue['nickName'],
-        password: inputValue['password'],
+        email: inputValue["email"],
+        nickname: inputValue["nickName"],
+        password: inputValue["password"],
       },
     };
-    console.log(obj)
+    console.log(obj);
 
-    setIsPending(prevState => {return{...prevState, isPending: true}});
+    setIsPending((prevState) => {
+      return { ...prevState, isPending: true };
+    });
     try {
-      const res = await axios.post(`${baseUrl}/users`, obj);
+      await axios.post(`${baseUrl}/users`, obj);
       navigate("/", { replace: true });
-    }catch (err){
-       setIsPending(prevState => {return{...prevState, isPending: false}})
-       setIsPending(prevState => {return{...prevState, isError: true}})
-       setTimeout(() => setIsPending(prevState => {return{...prevState, isError: false}}), 1000)
+    } catch (err) {
+      setIsPending((prevState) => {
+        return { ...prevState, isPending: false };
+      });
+      setIsPending((prevState) => {
+        return { ...prevState, isError: true };
+      });
+      setTimeout(
+        () =>
+          setIsPending((prevState) => {
+            return { ...prevState, isError: false };
+          }),
+        1000
+      );
     }
   };
 
@@ -66,59 +76,61 @@ export default function Regist({ baseUrl }) {
       <Layout_Hscreen>
         <Body_RectangleWrap bodyTitle="Regist">
           <ul className="pt-12 pl-20 pr-14 pb-14 font-light md:pl-16 md:pt-20 md:pr-64">
-            <li className="mb-12">
-              <p className="text-lg">EMAIL
-              {!inputValue['email'].match(emailRegexr) && <span className='ml-3 text-sm text-red-600'>電子郵件格式錯誤</span>}
-              </p>
-              <input
-                type="email"
-                name="email"
-                value={inputValue['email']}
-                onChange={(e) => {
-                  handleChange(e)
-                }}
-                className="w-full border-b-2 border-black"
-              />
-            </li>
-            <li className="mb-12">
-              <p className="text-lg">NICKNAME
-               {inputValue['nickName'].length == 0 && <span className="ml-3 text-sm text-red-600">不得為空</span>}
-              </p>
-              <input
-                type="text"
-                name="nickName"
-                value={inputValue['nickName']}
-                onChange={(e) => {
-                  handleChange(e)
-                }}
-                className="w-full border-b-2 border-black"
-              />
-            </li>
-            <li className="mb-12">
-              <p className="text-lg">
-                PASSWORD
-                {inputValue['password'].length <= 5 && <span className="ml-3 text-sm text-red-600">至少六個字</span>}
-              </p>
-              <input
-                type="password"
-                name="password"
-                value={inputValue['password']}
-                onChange={(e) => handleChange(e)}
-                className="w-full border-b-2 border-black"
-              />
-            </li>
-            <li className="mb-20">
-              <p className="text-lg">Confirm the PASSWORD
-              {!(inputValue['password'] == inputValue['checkPassword']) && <span className="ml-3 text-sm text-red-600">密碼不相同</span>}
-              </p>
-              <input
-                type="password"
-                name="checkPassword"
-                value={inputValue['checkPassword']}
-                onChange={(e) => handleChange(e)}
-                className="w-full border-b-2 border-black"
-              />
-            </li>
+            <List_Input
+              tilte="EMAIL"
+              inputName="email"
+              inputType="email"
+              onHandleChange={handleChange}
+              inputValue={inputValue}
+              className_li="mb-12"
+              className_p="text-lg"
+            >
+              {!inputValue["email"].match(emailRegexr) && (
+                <span className="ml-3 text-sm text-red-600">
+                  電子郵件格式錯誤
+                </span>
+              )}
+            </List_Input>
+
+            <List_Input
+              tilte="NICKNAME"
+              inputName="nickname"
+              inputType="text"
+              onHandleChange={handleChange}
+              inputValue={inputValue}
+              className_li="mb-12"
+              className_p="text-lg"
+            >
+              {inputValue["nickName"].length == 0 && (
+                <span className="ml-3 text-sm text-red-600">不得為空</span>
+              )}
+            </List_Input>
+            <List_Input
+              tilte="PASSWORD"
+              inputName="password"
+              inputType="password"
+              onHandleChange={handleChange}
+              inputValue={inputValue}
+              className_li="mb-12"
+              className_p="text-lg"
+            >
+              {inputValue["password"].length <= 5 && (
+                <span className="ml-3 text-sm text-red-600">至少六個字</span>
+              )}
+            </List_Input>
+            <List_Input
+              tilte="checkPASSWORD"
+              inputName="checkPassword"
+              inputType="password"
+              onHandleChange={handleChange}
+              inputValue={inputValue}
+              className_li="mb-12"
+              className_p="text-lg"
+            >
+              {!(inputValue["password"] == inputValue["checkPassword"]) && (
+                <span className="ml-3 text-sm text-red-600">密碼不相同</span>
+              )}
+            </List_Input>
             <li className="flex items-end justify-between text-xl">
               <Link to="/">
                 <p className="text-base underline">返回</p>
@@ -130,16 +142,16 @@ export default function Regist({ baseUrl }) {
                 下一步
               </p>
             </li>
-          </ul> 
+          </ul>
         </Body_RectangleWrap>
       </Layout_Hscreen>
-      <div className={`${isPending['isPending'] ? "show" : "close"}`}>
+      <div className={`${isPending["isPending"] ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
       </div>
-      <div className={`${isPending['isError'] ? "show" : "close"}`}>
+      <div className={`${isPending["isError"] ? "show" : "close"}`}>
         <ErrorModal modalMessage="註冊失敗" />
       </div>
-      <div className={`${isPending['isSuccess'] ? "show" : "close"}`}>
+      <div className={`${isPending["isSuccess"] ? "show" : "close"}`}>
         <ErrorModal modalMessage="註冊成功" />
       </div>
     </>
