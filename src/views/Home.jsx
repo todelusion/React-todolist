@@ -14,6 +14,7 @@ import useInputChange from "../hooks/useInputChange";
 import Nav from "./Nav";
 // fweruoueio@gmail.com
 // fweruoueio
+// "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjU5Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjYwNjU3MjczLCJleHAiOjE2NjE5NTMyNzMsImp0aSI6IjZiNDZlOWEyLTI1N2QtNDk1My1iNmQzLWQ0NGM2MTJiYTk5MiJ9.IfZo71lDFB4rOxxorvW1hrIK3FGs1JuZOC-I_rW-dLM"
 
 export default function Home({ baseUrl }) {
   const emailRegexr =
@@ -42,9 +43,11 @@ export default function Home({ baseUrl }) {
     setIsLoading("isPending", true);
     try {
       const res = await axios.post(`${baseUrl}/users/sign_in`, obj);
-      console.log(res);
+      sessionStorage.setItem('token', res.headers.authorization)
+      console.log(res)
       setIsLoading("isPending", false);
       navigate("/todolist", { replace: true });
+
     } catch (err) {
       console.log(err);
       setIsLoading("isPending", false);

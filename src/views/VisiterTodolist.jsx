@@ -222,7 +222,6 @@ function VisiterTodolist() {
       </section>
       <div className={`${isPending === true ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
-        Body_RectangleWrap{" "}
       </div>
     </>
   );

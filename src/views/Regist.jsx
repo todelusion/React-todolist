@@ -16,13 +16,6 @@ import ErrorModal from "../components/ErrorModal";
 export default function Regist({ baseUrl }) {
   const navigate = useNavigate();
 
-  // const [inputValue, setInputValue] = useState({
-  //   email: "",
-  //   nickName: "",
-  //   password: "",
-  //   checkPassword: "",
-  // });
-
   const [inputValue, setInputValue] = useInputChange({
     email: "",
     nickName: "",
@@ -34,13 +27,6 @@ export default function Regist({ baseUrl }) {
     isError: false,
     isSuccess: false,
   });
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setInputValue((prevState) => {
-  //     return { ...prevState, [name]: value };
-  //   });
-  // };
 
   const emailRegexr =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;

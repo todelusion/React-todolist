@@ -8,32 +8,33 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import LoadingModal from "../components/LoadingModal";
 import Nav from "./Nav";
 
-const baseUrl = "https://fathomless-brushlands-42339.herokuapp.com/todo8";
+import useLoading from "../hooks/useLoading";
 
-function Todolist() {
+
+
+function Todolist({baseUrl}) {
   const [events, setEvents] = useState([]);
-  // const [key, setKey] = useState(1);
-  const [switchOptions, setSwitchOptions] = useState("");
+  const [switchOptions, setSwitchOptions] = useState(1);
   const [input, setInput] = useState("");
-  const [isPending, setIsPending] = useState(false);
+  const [isLoading, setIsLoading] = useLoading({
+    isPending: true
+  });
+
+  const axiosConfig = {
+    headers: { Authorization: sessionStorage.getItem('token') }
+  }
+  useEffect(() => {fetchData()},[]);
 
   const fetchData = async () => {
-    const res = await axios.get(baseUrl);
-    console.log(res);
-    setEvents(res.data);
-    setIsPending(false);
+    setIsLoading('isPending', true)
+      const res = await axios.get(`${baseUrl}/todos`, axiosConfig);
+      setIsLoading('isPending', false);
+      if(res.data.todos.length === 0) return;
+      setEvents(res.data.todos);
+      
   };
-
-  //每當useEffect依賴項變動，就再重複執行一次useEffect，這裡用key值表示
-  //不過由於fetchData變數函式被直接拆到外層scope宣告，所以直接在任何地方呼叫fetchData即可
-  useEffect(
-    () => {
-      fetchData();
-    },
-    /*[key]*/ []
-  );
-
-  const handleInput = (e) => {
+ 
+  const handleInput = (e) => {  
     setInput(e.target.value);
   };
 
@@ -43,7 +44,6 @@ function Todolist() {
     } else {
       const obj = {
         content: input,
-        completed_at: "inProgrees",
       };
       return obj;
     }
@@ -52,9 +52,14 @@ function Todolist() {
   const handleEvent = async (e) => {
     if (e.code == "Enter" || e.type == "click") {
       if (setTempEvent()) {
-        setIsPending(true);
+        setIsLoading('isPending', true);
         setInput("");
-        const res = await axios.post(`${baseUrl}`, setTempEvent());
+        try{
+          const res = await axios.post(`${baseUrl}/todos`, setTempEvent(), axiosConfig);
+          console.log(res)
+        }catch(err){
+          console.log(err)
+        }
         fetchData();
       } else {
         alert("欄位不得為空");
@@ -62,31 +67,31 @@ function Todolist() {
     }
   };
   const handleDelete = async (index) => {
-    setIsPending(true);
-    await axios.delete(`${baseUrl}/${events[index].id}`);
+    setIsLoading('isPending', true);
+    await axios.delete(`${baseUrl}/todos/${events[index].id}`, axiosConfig);
     setEvents(
       events.filter((event, eventIndex) => {
         return index !== eventIndex;
       })
     );
-    setIsPending(false);
+    setIsLoading('isPending', false);
   };
   const handleStatus = async (index) => {
-    const completed_at =
-      events[index].completed_at === "inProgrees" ? "isDone" : "inProgrees";
-
-    const obj = {
-      completed_at: completed_at,
-    };
-    setIsPending(true);
-    const res = await axios.patch(`${baseUrl}/${events[index].id}`, obj);
-    fetchData();
+    try {
+      setIsLoading('isPending', true);
+      console.log()
+      const res = await axios.patch(`${baseUrl}/todos/${events[index].id}/toggle`, {}, axiosConfig);
+      console.log(res)
+      fetchData();
+    }catch(err){
+      console.log(err)
+    }
   };
 
   const clearAll = () => {
-    events.forEach((event, index) => {
+    events.forEach((event) => {
       axios
-        .delete(`${baseUrl}/${event.id}`)
+        .delete(`${baseUrl}/todos/${event.id}`, axiosConfig)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     });
@@ -95,33 +100,33 @@ function Todolist() {
 
   const todosCount = () => {
     const inProgreesCounts = events.filter(
-      (event) => event.completed_at === "inProgrees"
+      (event) => typeof event.completed_at === "object"
     ).length;
     return inProgreesCounts;
   };
 
   //switch panel
-  const showTodo = (index) => {
-    if (switchOptions === "inProgrees" || switchOptions === "isDone") {
-      return events[index].completed_at === switchOptions ? "block" : "hidden";
-    } else {
-      return true;
+  const showTodo = (event) => {
+    if (typeof switchOptions === "object" || typeof switchOptions === "string") {
+      return typeof event.completed_at === typeof switchOptions ? "block" : "hidden";
+    }else{
+      return true
     }
   };
 
   const switchToAll = () => {
-    setSwitchOptions("");
+    setSwitchOptions(1);
   };
   const switchToInProgress = () => {
-    setSwitchOptions("inProgrees");
+    setSwitchOptions(null);
   };
   const switchToIsdone = () => {
-    setSwitchOptions("isDone");
+    setSwitchOptions("string");
   };
 
   return (
     <>
-      <Nav isPending={isPending} />
+      <Nav isLoading={isLoading['isPending']} />
       <section className="container mx-auto mb-20 mt-32 flex flex-col items-center">
         <div className="RectangleContainer hover-RectangleContainer RectangleSelf hover-RectangleSelf mb-10 flex  items-center py-5 pl-10 pr-7">
           <input
@@ -180,27 +185,23 @@ function Todolist() {
                 return (
                   <li
                     key={event.id}
-                    className={`flex items-center justify-between py-5 ${showTodo(
-                      index
-                    )}`}
+                    // className={`flex items-center justify-between py-5`}
+                    className={`flex items-center justify-between py-5 ${showTodo(event)}`}
                   >
                     <div className="flex items-center">
-                      {/*
-                      直接發api patch請求修改completed_at，並重發api（重設key值）以便重新渲染頁面
-                      */}
-                      {event.completed_at === "isDone" && (
+                      {typeof event.completed_at === "string" && (
                         <FontAwesomeIcon
                           icon={faCheck}
                           className="h-5 w-5 text-primary"
                         />
                       )}
-                      {event.completed_at === "inProgrees" && (
+                      {typeof event.completed_at === "object" && (
                         <div className="border-2 border-black p-2"></div>
                       )}
                       <p
                         onClick={() => handleStatus(index)}
                         className={`ml-7 block cursor-pointer break-all hover:line-through ${
-                          event.completed_at === "isDone"
+                          typeof event.completed_at === "string"
                             ? "completed_true"
                             : "completed_false"
                         }`}
@@ -220,9 +221,8 @@ function Todolist() {
           <p className="text-right">{todosCount()}個待完成項目</p>
         </div>
       </section>
-      <div className={`${isPending === true ? "show" : "close"}`}>
+      <div className={`${isLoading['isPending'] === true ? "show" : "close"}`}>
         <LoadingModal modalMessage="處理中" />
-        Body_RectangleWrap{" "}
       </div>
     </>
   );
