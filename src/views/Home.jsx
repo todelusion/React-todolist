@@ -44,19 +44,23 @@ export default function Home({ baseUrl }) {
     setIsPending((prevState) => {
       return { ...prevState, isPending: true };
     });
+
     try {
-      await axios.post(`${baseUrl}/sign_in`, obj);
+      await axios.post(`${baseUrl}/users/sign_in`, obj);
+      alert('登入成功')
+      // navigate("/", { replace: true });
+    } catch (err) {
       setIsPending((prevState) => {
         return { ...prevState, isPending: false };
       });
-    } catch (err) {
       setIsPending((prevState) => {
         return { ...prevState, isError: true };
       });
       setTimeout(
-        setIsPending((prevState) => {
-          return { ...prevState, isError: false };
-        }),
+        () =>
+          setIsPending((prevState) => {
+            return { ...prevState, isError: false };
+          }),
         1000
       );
     }
@@ -120,7 +124,7 @@ export default function Home({ baseUrl }) {
         <LoadingModal modalMessage="處理中" />
       </div>
       <div className={`${isPending["isError"] ? "show" : "close"}`}>
-        <ErrorModal modalMessage="註冊失敗" />
+        <ErrorModal modalMessage="登入失敗" />
       </div>
     </>
   );
