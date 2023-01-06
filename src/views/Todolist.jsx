@@ -145,12 +145,14 @@ function Todolist({baseUrl}) {
           </button>
         </div>
         <div className="mb-10 flex w-full justify-between">
-          <div className="h-20 w-20 p-1 md:w-40 md:p-0">
+          <div className="h-10 w-max p-1 md:w-40 md:p-0">
             <button
               onClick={clearAll}
-              className="btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full p-3 text-xs tracking-widest md:text-base"
+              className="btn-RectangleContainer btn-hover-RectangleContainer btn-RectangleSelf btn-hover-RectangleSelf h-full p-3 text-xs tracking-widest md:text-base w-max"
             >
-              Clear All
+              <p className="leading-3">
+              刪除全部
+              </p>
             </button>
           </div>
           <div className="h-20 p-1 md:w-40 md:p-0">
