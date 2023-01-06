@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -12,9 +11,6 @@ import useLoading from "../hooks/useLoading";
 import useInputChange from "../hooks/useInputChange";
 
 import Nav from "./Nav";
-// fweruoueio@gmail.com
-// fweruoueio
-// "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNjU5Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjYwNjU3MjczLCJleHAiOjE2NjE5NTMyNzMsImp0aSI6IjZiNDZlOWEyLTI1N2QtNDk1My1iNmQzLWQ0NGM2MTJiYTk5MiJ9.IfZo71lDFB4rOxxorvW1hrIK3FGs1JuZOC-I_rW-dLM"
 
 export default function Home({ baseUrl }) {
   const emailRegexr =
